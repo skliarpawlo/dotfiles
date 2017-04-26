@@ -108,6 +108,7 @@ nmap <leader>c :Tags<cr>
 nmap <leader>a :Ag<cr>
 nmap <leader>j :GFiles?<cr>
 nmap <leader>f :Files<cr>
+nmap <leader>l :BLines<cr>
 nmap <leader>t :TagbarToggle<cr>
 nmap <leader>b :Buffers<cr>
 
