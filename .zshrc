@@ -82,7 +82,10 @@ fcd() {
    local dir
    file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
 }
-
+# fzf history
+fh() {
+  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+}
 fbr() {
     local branches branch
     branches=$(git branch --all | grep -v HEAD) &&
@@ -107,8 +110,27 @@ ide() {
  tmux attach -t $1
 }
 
+cat_kafka() {
+
+/Users/psk/confluent-2.0.1/bin/kafka-avro-console-consumer \
+	--bootstrap-server "polaris.kafka.tubularlabs.net:9092" \
+	--property schema.registry.url=http://sr.tubularlabs.net:8081/ \
+	--topic "$1" \
+	--new-consumer
+
+}
+
+cat_kafka_json() {
+
+/Users/psk/confluent-2.0.1/bin/kafka-console-consumer \
+	--bootstrap-server "polaris.kafka.tubularlabs.net:9092" \
+	--topic "$1" \
+	--new-consumer
+
+}
+
 jupie() {
-    temr --name='pavlos-jupacca' --core-instances='2:c3.2xlarge' --no-auto-terminate --boot-pypackage='tubular-pyspark' --boot-pypackage='sparkly==1.1.1' --boot-pypackage=tubular-jupacca -- jupacca
+    temr --name="$1" --core-instances='2:c3.2xlarge' --no-auto-terminate --boot-pypackage='matplotlib' --boot-pypackage='pandas' --boot-pypackage='tubular-pyspark' --boot-pypackage='sparkly==2.0.2' --boot-pypackage='tubular-avroplane==0.13.0.dev.1' --boot-pypackage=tubular-jupacca --boot-pypackage=matplotlib -- jupacca
 }
 
 djupie() {
@@ -207,3 +229,5 @@ source /Users/psk/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # tmuxinator
 source ~/.tmuxinator.zsh
+
+[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"

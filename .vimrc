@@ -35,6 +35,9 @@ Plugin 'christoomey/vim-tmux-navigator'
 "Plugin 'vim-syntastic/syntastic'
 Plugin 'sbdchd/neoformat'
 Plugin 'luochen1990/rainbow'
+Plugin 'jceb/vim-orgmode'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'Vimjas/vim-python-pep8-indent'
 call vundle#end()
 filetype plugin indent on
 source /Library/Python/2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
@@ -131,14 +134,30 @@ let NERDTreeIgnore = ['\.pyc$']
 silent! call repeat#set("\<Plug>MyWonderfulMap",v:count)
 
 "hardmode
-"autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+let g:HardMode_level = 'wannabe'
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 
 "let g:syntastic_python_flake8_exec = 'python3'
 "let g:syntastic_python_flake8_args = ['-m', 'flake8']
 
+"shorthands https://hackr.pl/2017/01/11/some-of-my-favorite-vimrc-edits/
+nnoremap ; :
+inoremap jk <Esc>
+inoremap ii <Esc>$a
+nmap <Leader>ev :e ~/.vimrc<CR>
+
 "rainbow parentheses
 let g:rainbow_active = 0
 noremap <leader>0 :RainbowToggle<cr>
+
+" provide hjkl movements in Insert mode via the <Ctrl> modifier key
+inoremap <C-h> <C-o>h
+inoremap <C-j> <C-o>j
+inoremap <C-k> <C-o>k
+inoremap <C-l> <C-o>l
+inoremap <C-w> <C-o>w
+inoremap <C-b> <C-o>b
+inoremap <C-e> <C-o>e
 
 set clipboard=unnamed
