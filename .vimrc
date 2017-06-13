@@ -38,6 +38,7 @@ Plugin 'luochen1990/rainbow'
 Plugin 'jceb/vim-orgmode'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'Vimjas/vim-python-pep8-indent'
+Plugin 'tpope/vim-fireplace'
 call vundle#end()
 filetype plugin indent on
 source /Library/Python/2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
@@ -148,7 +149,7 @@ inoremap ii <Esc>$a
 nmap <Leader>ev :e ~/.vimrc<CR>
 
 "rainbow parentheses
-let g:rainbow_active = 0
+let g:rainbow_active = 1
 noremap <leader>0 :RainbowToggle<cr>
 
 " provide hjkl movements in Insert mode via the <Ctrl> modifier key
@@ -161,3 +162,4 @@ inoremap <C-b> <C-o>b
 inoremap <C-e> <C-o>e
 
 set clipboard=unnamed
+set backupskip=/tmp/*,/private/tmp/*
