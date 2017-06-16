@@ -130,7 +130,7 @@ cat_kafka_json() {
 }
 
 jupie() {
-    temr --name="$1" --core-instances='2:c3.2xlarge' --no-auto-terminate --boot-pypackage='matplotlib' --boot-pypackage='pandas' --boot-pypackage='tubular-pyspark' --boot-pypackage='sparkly==2.0.2' --boot-pypackage='tubular-avroplane==0.13.0.dev.1' --boot-pypackage=tubular-jupacca --boot-pypackage=matplotlib -- jupacca
+    temr --name="$1" --core-instances=${2:-2:c3.2xlarge} --no-auto-terminate --boot-pypackage='matplotlib' --boot-pypackage='pandas' --boot-pypackage='tubular-pyspark' --boot-pypackage='sparkly==2.0.2' --boot-pypackage='tubular-avroplane==0.13.0.dev.1' --boot-pypackage=tubular-jupacca --boot-pypackage=matplotlib -- jupacca
 }
 
 djupie() {
