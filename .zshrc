@@ -134,8 +134,13 @@ jupie() {
 }
 
 djupie() {
-    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/emr:4.3.0.dev jupacca
+    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/temr/emr-5-2-1-dev:0.0.4 jupacca
 }
+
+djupie_old() {
+    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/temr/emr-4-3-0-dev:0.0.2 jupacca
+}
+
 
 ddev() {
     docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/emr:4.3.0.dev /bin/bash
@@ -163,14 +168,10 @@ dbash() {
     docker-compose run $* /bin/bash
 }
 
-dssh() {
-    docker-machine ssh $*
-}
-
-gcap() {
+gappend() {
     git config --global push.default current
-    git add .
-    git commit --amend
+    git add -u
+    git commit --amend --no-edit
     git push origin --force
 }
 
@@ -178,6 +179,8 @@ gff() {
     git fetch
     git merge --ff-only
 }
+
+alias gri="git rebase --interactive"
 
 alias goinfra="cd ~/tubular/repos/infrastructure"
 alias gotb="cd ~/tubular/repos/tbcode"
