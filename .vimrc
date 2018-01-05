@@ -1,5 +1,6 @@
 execute pathogen#infect()
 set nocompatible
+set nohlsearch
 filetype indent plugin on
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#begin()

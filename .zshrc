@@ -1,4 +1,6 @@
 # Path to your oh-my-zsh installation.
+export TUBULAR_COMMIT_EMOJI=G
+export PYTHONIOENCODIN=utf-8
 export ZSH=~/.oh-my-zsh
 
 export LC_ALL=en_US.UTF-8
@@ -129,18 +131,37 @@ cat_kafka_json() {
 
 }
 
+vihosts() {
+    sudo vim /etc/hosts
+}
+
+en3updown() {
+    sudo ifconfig en3 down
+    sudo ifconfig en3 up
+}
+
 jupie() {
-    temr --name="$1" --core-instances=${2:-2:c3.2xlarge} --no-auto-terminate --boot-pypackage='matplotlib' --boot-pypackage='pandas' --boot-pypackage='tubular-pyspark' --boot-pypackage='sparkly==2.0.2' --boot-pypackage='tubular-avroplane==0.13.0.dev.1' --boot-pypackage=tubular-jupacca --boot-pypackage=matplotlib -- jupacca
+    temr --name="$1" --master-instances=1:m3.xlarge --core-instances=${2:-2:c3.2xlarge} --emr-release="${3:-emr-5.9.0}" --no-auto-terminate --enable-monitoring --boot-pypackage='pyspark==2.2.0' --boot-pypackage='sparkly==2.3.0' --boot-pypackage='tubular-avroplane[encrypt]==0.19.0' --boot-pypackage=tubular-jupacca==0.2.0.dev6 -- jupacca
 }
 
 djupie() {
-    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/temr/emr-5-2-1-dev:0.0.4 jupacca
+    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/temr/emr-5-8-0-dev:0.0.1 jupacca
 }
 
-djupie_old() {
-    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/temr/emr-4-3-0-dev:0.0.2 jupacca
+myip() {
+    ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
+    echo $ip
+    #xhost + $ip
 }
 
+startx() {
+    ip=`myip`
+    export DISPLAY=$ip:0
+    /opt/X11/bin/xhost + $ip
+	if [ -z "$(ps -ef|grep XQuartz|grep -v grep)" ] ; then
+	    open -a XQuartz
+	fi
+}
 
 ddev() {
     docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/emr:4.3.0.dev /bin/bash
@@ -175,13 +196,16 @@ gappend() {
     git push origin --force
 }
 
+gcache() {
+    git diff --cached
+}
+
 gff() {
     git fetch
     git merge --ff-only
 }
 
-alias gri="git rebase --interactive"
-
+alias gst="git status"
 alias goinfra="cd ~/tubular/repos/infrastructure"
 alias gotb="cd ~/tubular/repos/tbcode"
 alias gomesos="cd ~/tubular/repos/mesos-jobs"
@@ -228,9 +252,14 @@ alias ddown="docker-compose down -v"
 [ -f /Users/psk/.travis/travis.sh ] && source /Users/psk/.travis/travis.sh
 source /Users/psk/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # tmuxinator
-source ~/.tmuxinator.zsh
+#source ~/.tmuxinator.zsh
 
 [[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
+
+export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools/:/Users/psk/tubular/vault_dir
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
