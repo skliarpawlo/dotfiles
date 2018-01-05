@@ -1,0 +1,62 @@
+FROM spacemacs/emacs25:develop
+
+###############
+# SPACEMACS
+###############
+
+ENV UNAME="spacemacser"
+ENV UID="1000"
+
+# init my spacemacs layers
+COPY .spacemacs "${UHOME}/.spacemacs"
+
+# layers deps
+RUN apt-get update
+RUN apt-get install zsh ispell
+
+RUN install-deps; exit 0
+
+
+###############
+# SPARK DEPS
+###############
+
+# OpenJDK 8
+RUN apt-get install software-properties-common python-software-properties
+RUN add-apt-repository ppa:openjdk-r/ppa
+RUN apt-get update && apt-get install -y --force-yes openjdk-8-jre
+
+# Spark 2.0.2
+RUN apt-get install -y curl
+RUN curl -s https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz | tar -xz -C /usr/local/
+RUN cd /usr/local && ln -s spark-2.2.0-bin-hadoop2.7 spark
+ENV SPARK_HOME "/usr/local/spark/"
+ENV PYTHONPATH "/usr/local/spark/python/lib/pyspark.zip:/usr/local/spark/python/lib/py4j-0.10.4-src.zip:/opt/avroplane"
+ENV SPARK_TESTING true
+
+###############
+# PYTHON DEPS
+###############
+
+# Install Python testing utils
+RUN apt-get install python3-pip
+RUN python3.5 -m pip install pip==8.1.2 tox==2.4.1
+RUN rm /usr/bin/python
+RUN ln -s /usr/bin/python3.5 /usr/bin/python
+
+# RUN yum install -y git
+COPY requirements.txt /tmp/requirements.txt
+RUN python3.5 -m pip install -r /tmp/requirements.txt
+
+# Testing
+COPY requirements_dev.txt /tmp/requirements_dev.txt
+RUN python3.5 -m pip install -r /tmp/requirements_dev.txt
+RUN python3.5 -m pip install wheel ipython
+ENV PYTHONIOENCODING utf_8
+
+# Git configure
+RUN git config --global user.name skliarpawlo \
+    && git config --global user.email skliarpawlo@gmail.com
+
+# Mount code
+ADD . /mnt/workspace
