@@ -155,12 +155,12 @@ myip() {
 }
 
 startx() {
-    ip=`myip`
-    export DISPLAY=$ip:0
-    /opt/X11/bin/xhost + $ip
 	if [ -z "$(ps -ef|grep XQuartz|grep -v grep)" ] ; then
 	    open -a XQuartz
 	fi
+    ip=`myip`
+    export DISPLAY=:0
+    /opt/X11/bin/xhost + $ip
 }
 
 ddev() {
