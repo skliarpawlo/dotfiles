@@ -45,7 +45,8 @@ values."
      auto-completion
      better-defaults
      emacs-lisp
-     python
+     (python :variables
+             python-test-runner 'pytest)
      osx
      scala
 
