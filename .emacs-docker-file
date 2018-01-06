@@ -43,14 +43,6 @@ RUN apt-get install python3-pip
 RUN python3.5 -m pip install pip==8.1.2 tox==2.4.1 traad
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3.5 /usr/bin/python
-
-# RUN yum install -y git
-COPY requirements.txt /tmp/requirements.txt
-RUN python3.5 -m pip install -r /tmp/requirements.txt
-
-# Testing
-COPY requirements_dev.txt /tmp/requirements_dev.txt
-RUN python3.5 -m pip install -r /tmp/requirements_dev.txt
 RUN python3.5 -m pip install wheel ipython
 ENV PYTHONIOENCODING utf_8
 
@@ -58,9 +50,8 @@ ENV PYTHONIOENCODING utf_8
 RUN mkdir ${UHOME}/.virtualenvs
 RUN virtualenv -p python3.5 --system-site-packages ${UHOME}/.virtualenvs/traad
 
-# Git configure
+#######
+# GIT
+#######
 RUN git config --global user.name skliarpawlo \
     && git config --global user.email skliarpawlo@gmail.com
-
-# Mount code
-ADD . /mnt/workspace
