@@ -142,7 +142,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(zenburn
+   dotspacemacs-themes '(brin
+                         zenburn
                          spacemacs-dark
                          wombat
                          wilson
@@ -362,3 +363,4 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(default ((t (:background nil)))))
 (setq neo-theme 'nerd)
+(set-variable 'cider-lein-parameters "repl :headless :host localhost")

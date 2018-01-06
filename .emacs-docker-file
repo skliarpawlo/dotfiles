@@ -56,6 +56,7 @@ RUN virtualenv -p python3.5 --system-site-packages ${UHOME}/.virtualenvs/traad
 RUN curl -o /usr/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 RUN chmod +x /usr/bin/lein
 RUN sudo su spacemacser -c "lein"
+RUN apt-get install libgfortran3
 
 #######
 # GIT
