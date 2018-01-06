@@ -31,7 +31,7 @@ RUN apt-get install -y curl
 RUN curl -s https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s spark-2.2.0-bin-hadoop2.7 spark
 ENV SPARK_HOME "/usr/local/spark/"
-ENV PYTHONPATH "/usr/local/spark/python/lib/pyspark.zip:/usr/local/spark/python/lib/py4j-0.10.4-src.zip:/opt/avroplane"
+ENV PYTHONPATH "/usr/local/spark/python/lib/pyspark.zip:/usr/local/spark/python/lib/py4j-0.10.4-src.zip:/mnt/workspace"
 ENV SPARK_TESTING true
 
 ###############
@@ -49,6 +49,13 @@ ENV PYTHONIOENCODING utf_8
 # Traad: python refactoring
 RUN mkdir ${UHOME}/.virtualenvs
 RUN virtualenv -p python3.5 --system-site-packages ${UHOME}/.virtualenvs/traad
+
+####################
+# Clojure Leiningen
+####################
+RUN curl -o /usr/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+RUN chmod +x /usr/bin/lein
+RUN sudo su spacemacser -c "lein"
 
 #######
 # GIT
