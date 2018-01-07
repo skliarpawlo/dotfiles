@@ -1,5 +1,8 @@
 FROM spacemacs/emacs25:develop
 
+# BUILD: docker build -t pavlo/spacemacs:1.0 -f .emacs-docker-file .
+# USE: docker run -it -v /path/to/code:/mnt/workspace -e DISPLAY=localhost:0 pavlo/spacemacs:1.0 emacs
+
 ###############
 # SPACEMACS
 ###############
@@ -61,5 +64,9 @@ RUN apt-get install libgfortran3
 #######
 # GIT
 #######
-RUN git config --global user.name skliarpawlo \
-    && git config --global user.email skliarpawlo@gmail.com
+RUN sudo su spacemacser -c "git config --global user.name skliarpawlo \
+    && git config --global user.email skliarpawlo@gmail.com"
+RUN sudo su spacemacser -c "mkdir ~/.ssh"
+COPY .ssh/id_rsa.pub ${UHOME}/.ssh
+COPY .ssh/id_rsa ${UHOME}/.ssh
+RUN chown -R spacemacser:emacs ${UHOME}/.ssh/
