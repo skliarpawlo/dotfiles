@@ -1,11 +1,12 @@
-FROM pavlo/spacemacs:1.0
+FROM pavlo/spacemacs:2.0
+
+WORKDIR /code
 
 ARG SUBDIR
-COPY --chown=spacemacser:emacs .git /mnt/workspace/.git
-RUN sudo su spacemacser -c "git config core.sparseCheckout true"
-RUN sudo su spacemacser -c "echo "${SUBDIR}/*" > .git/info/sparse-checkout"
-RUN sudo su spacemacser -c "git checkout master && git reset --hard origin/master"
+COPY .git /code/.git
+RUN git config core.sparseCheckout true
+RUN echo "${SUBDIR}/*" > .git/info/sparse-checkout
+RUN git checkout master && git reset --hard origin/master
 
-RUN pip3.5 install -r /mnt/workspace/${SUBDIR}/requirements.txt
-RUN pip3.5 install -r /mnt/workspace/${SUBDIR}/requirements_dev.txt
-
+RUN pip3.5 install -r /code/${SUBDIR}/requirements.txt
+RUN pip3.5 install -r /code/${SUBDIR}/requirements_dev.txt
