@@ -89,3 +89,8 @@ RUN git config --global user.name skliarpawlo \
 RUN mkdir ${HOME}/.ssh
 COPY .ssh/id_rsa.pub ${HOME}/.ssh
 COPY .ssh/id_rsa ${HOME}/.ssh
+
+#################
+# SILVER SEARCH
+#################
+RUN apt-get install -y --force-yes silversearcher-ag
