@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 
 # BUILD: docker build -t pavlo/spacemacs:2.0 -f .emacs-docker-file .
-# USE: docker run -it -v /path/to/code:/mnt/workspace -e DISPLAY=localhost:0 pavlo/spacemacs:1.0 emacs
+# USE: docker run -it -v /path/to/code:/mnt/workspace -e DISPLAY=localhost:0 pavlo/spacemacs:2.0 emacs
 
 ##########
 # emacs25
@@ -49,7 +49,7 @@ RUN apt-get install software-properties-common python-software-properties
 RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update && apt-get install -y --force-yes openjdk-8-jre
 
-# Spark 2.0.2
+# Spark 2.2.0
 RUN apt-get install -y curl
 RUN curl -s https://d3kbcqa49mib13.cloudfront.net/spark-2.2.0-bin-hadoop2.7.tgz | tar -xz -C /usr/local/
 RUN cd /usr/local && ln -s spark-2.2.0-bin-hadoop2.7 spark
@@ -67,6 +67,7 @@ RUN python3.5 -m pip install pip==8.1.2 tox==2.4.1 traad
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3.5 /usr/bin/python
 RUN python3.5 -m pip install wheel ipython
+RUN python3.5 -m pip install pyspark==2.2.0 --index-url https://pypi.tubularlabs.net/ --use-wheel
 ENV PYTHONIOENCODING utf_8
 
 # Traad: python refactoring
