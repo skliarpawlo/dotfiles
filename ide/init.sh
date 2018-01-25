@@ -2,4 +2,6 @@
 
 cd /code && git pull
 
+emacs -fs &
+
 bash -c "$*"
