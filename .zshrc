@@ -106,10 +106,7 @@ fs() {
 alias vimf='vim $(fzf)'
 
 ide() {
- tmux new-session -s $1 -d "vim"
- tmux select-pane -t $1.0
- tmux split-window -v -t $1 "zsh"
- tmux attach -t $1
+    cd /Users/psk/dev/dotfiles/ide/ && ./ide.sh $1 $2 && cd -
 }
 
 cat_kafka() {
