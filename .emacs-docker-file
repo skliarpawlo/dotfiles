@@ -56,6 +56,13 @@ RUN cd /usr/local && ln -s spark-2.2.0-bin-hadoop2.7 spark
 ENV SPARK_HOME "/usr/local/spark/"
 ENV PYTHONPATH "/usr/local/spark/python/lib/pyspark.zip:/usr/local/spark/python/lib/py4j-0.10.4-src.zip:/mnt/workspace"
 ENV SPARK_TESTING true
+RUN mkdir /usr/local/spark/ext/
+
+# Spark AWS dependencies
+RUN curl -o /usr/local/spark/ext/hadoop-aws-2.7.3.jar http://central.maven.org/maven2/org/apache/hadoop/hadoop-aws/2.7.3/hadoop-aws-2.7.3.jar
+RUN curl -o /usr/local/spark/ext/aws-java-sdk-1.7.4.jar http://central.maven.org/maven2/com/amazonaws/aws-java-sdk/1.7.4/aws-java-sdk-1.7.4.jar
+
+COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 
 ###############
 # PYTHON DEPS
