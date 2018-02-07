@@ -102,3 +102,9 @@ COPY .ssh/id_rsa ${HOME}/.ssh
 # SILVER SEARCH
 #################
 RUN apt-get install -y --force-yes silversearcher-ag
+
+#################
+# AVRO
+#################
+RUN echo "deb http://archive.tubularlabs.net/apt/ unstable/" > /etc/apt/sources.list.d/tubular.unstable.list
+RUN apt-get update && apt-get -y --force-yes install avro-tools tubular-libavro
