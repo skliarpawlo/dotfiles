@@ -156,8 +156,8 @@ startx() {
 	    open -a XQuartz
 	fi
     ip=`myip`
-    export DISPLAY=:0
     /opt/X11/bin/xhost + $ip
+    export DISPLAY=$ip:0
 }
 
 ddev() {
