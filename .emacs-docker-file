@@ -70,7 +70,7 @@ COPY spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
 
 # Install Python testing utils
 RUN apt-get install -y --force-yes python3-pip
-RUN python3.5 -m pip install pip==8.1.2 tox==2.4.1 traad
+RUN python3.5 -m pip install pip==8.1.2 tox==2.4.1 traad isort
 RUN rm /usr/bin/python
 RUN ln -s /usr/bin/python3.5 /usr/bin/python
 RUN python3.5 -m pip install wheel ipython
