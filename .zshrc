@@ -66,7 +66,6 @@ plugins=(git vi-mode thefuck)
 # User configuration
 source $ZSH/oh-my-zsh.sh
 
-export SPARK_HOME=~/tubular/spark2/spark-2.1.0-bin-hadoop2.7
 #
 # fzf - kill
 fkill() {
@@ -107,6 +106,10 @@ alias vimf='vim $(fzf)'
 
 ide() {
     cd /Users/psk/dev/dotfiles/ide/ && ./ide.sh $1 $2 && cd -
+}
+
+em() {
+    emacsclient -a '' -c
 }
 
 cat_kafka() {
