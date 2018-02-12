@@ -22,6 +22,8 @@ RUN rm -rf ${HOME}/.emacs.d
 RUN rm -rf ${HOME}/.emacs
 RUN git clone -b develop https://github.com/syl20bnr/spacemacs ${HOME}/.emacs.d
 
+COPY .zshrc /root/.zshrc
+
 # fonts
 ENV NNG_URL="https://github.com/google/fonts/raw/master/ofl/\
 nanumgothic/NanumGothic-Regular.ttf" \
@@ -108,3 +110,4 @@ RUN apt-get install -y --force-yes silversearcher-ag
 #################
 RUN echo "deb http://archive.tubularlabs.net/apt/ unstable/" > /etc/apt/sources.list.d/tubular.unstable.list
 RUN apt-get update && apt-get -y --force-yes install avro-tools tubular-libavro
+RUN emacs --daemon
