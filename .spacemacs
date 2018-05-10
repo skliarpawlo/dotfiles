@@ -34,8 +34,7 @@ values."
      html
      javascript
      yaml
-     (clojure :variables
-              clojure-align-forms-automatically t)
+     clojure
      markdown
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -47,7 +46,8 @@ values."
      better-defaults
      emacs-lisp
      (python :variables
-             python-test-runner 'pytest)
+             python-test-runner 'pytest
+             python-backend 'anaconda)
      osx
      scala
 
@@ -143,8 +143,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(darkokai
-                         brin
+   dotspacemacs-themes '(brin
+                         darkokai
                          zenburn
                          spacemacs-dark
                          wombat
@@ -345,7 +345,12 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (setq multi-term-program "/bin/zsh")
+  ;(setq python-shell-interpreter "/docker:root@tool-castor_dev_run_1:python3.5")
+  ;(setq anaconda-mode-server-command "/root/.emacs.d/.cache/anaconda-mode/0.1.9/anaconda_mode-0.1.9-py3.5.egg/anaconda_mode.py")
   )
+
+;(with-eval-after-load 'python
+;  (add-hook 'python-mode-hook (lambda () (setq python-shell-interpreter "/docker:root@tool-castor_dev_run_1:/usr/local/lib/python3.5"))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

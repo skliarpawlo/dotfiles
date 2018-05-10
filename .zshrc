@@ -177,6 +177,12 @@ ddev() {
     docker-compose run dev /bin/bash
 }
 
+dclean() {
+    docker rm $(docker ps -a -q)
+    docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+    docker volume rm $(docker volume ls -qf dangling=true)
+}
+
 dkafka() {
    docker-compose -f ~/tubular/repos/tbcode/pkg-castor/docker-compose.yml run -e ZOO="zookeeper.service.tubular:2181/kafka-taurus" kafka.docker /bin/bash
 }
