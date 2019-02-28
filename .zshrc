@@ -1,29 +1,41 @@
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 # Path to your oh-my-zsh installation.
-export TUBULAR_COMMIT_EMOJI=G
-export PYTHONIOENCODIN=utf-8
-export ZSH=~/.oh-my-zsh
+export ZSH="/Users/pavloskliar/.oh-my-zsh"
+#[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
+alias tblogin="tb ops okta login-aws all --user=pavlo@tubularlabs.com"
+alias gff="git fetch && git merge --ff-only origin"
+alias gb="git checkout -b"
+alias gp="git push origin HEAD"
+alias gojira="open \"https://tubularlabs.atlassian.net/secure/RapidBoard.jspa?rapidView=45&projectKey=DATA\""
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export EDITOR='vim'
+export AWS_DEFAULT_REGION=us-east-1
 
-source ~/.zsh-secrets
+gappend() {
+    git config --global push.default current
+    git add -u
+    git commit --amend --no-edit
+    git push origin --force
+}
 
-alias ctags="`brew --prefix`/bin/ctags"
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="robbyrussell"
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-
-ZSH_THEME="agnoster"
-# ZSH_THEME="powerlevel9k/powerlevel9k"
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
@@ -51,183 +63,31 @@ ZSH_THEME="agnoster"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode thefuck)
+plugins=(
+  git
+)
 
-# User configuration
 source $ZSH/oh-my-zsh.sh
 
-#
-# fzf - kill
-fkill() {
-  local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+bindkey -v
 
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
-  fi
-}
-# fzf - cd into the directory of the selected file
-fcd() {
-   local file
-   local dir
-   file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
-}
-# fzf history
-fh() {
-  eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
-}
-fbr() {
-    local branches branch
-    branches=$(git branch --all | grep -v HEAD) &&
-        branch=$(echo "$branches" |
-    fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-        git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-}
+# User configuration
 
-fs() {
-    local session
-    session=$(tmux list-sessions -F "#{session_name}" | \
-        fzf --query="$1" --select-1 --exit-0) &&
-        tmux attach -t "$session"
-}
-
-alias vimf='vim $(fzf)'
-
-ide() {
-    cd /Users/psk/dev/dotfiles/ide/ && ./ide.sh $1 $2 && cd -
-}
-
-em() {
-    emacsclient -a '' -c
-}
-
-cat_kafka() {
-
-/Users/psk/confluent-2.0.1/bin/kafka-avro-console-consumer \
-	--bootstrap-server "polaris.kafka.tubularlabs.net:9092" \
-	--property schema.registry.url=http://sr.tubularlabs.net:8081/ \
-	--topic "$1" \
-	--new-consumer
-
-}
-
-cat_kafka_json() {
-
-/Users/psk/confluent-2.0.1/bin/kafka-console-consumer \
-	--bootstrap-server "polaris.kafka.tubularlabs.net:9092" \
-	--topic "$1" \
-	--new-consumer
-
-}
-
-vihosts() {
-    sudo vim /etc/hosts
-}
-
-en3updown() {
-    sudo ifconfig en3 down
-    sudo ifconfig en3 up
-}
-
-jupie() {
-    temr --name="$1" --master-instances=1:m3.xlarge --core-instances=${2:-2:c3.2xlarge} --emr-release="${3:-emr-5.9.0}" --no-auto-terminate --enable-monitoring --boot-pypackage='pyspark==2.2.0' --boot-pypackage='sparkly==2.3.0' --boot-pypackage='tubular-avroplane[encrypt]==0.19.0' --boot-pypackage=tubular-jupacca==0.2.0.dev6 -- jupacca
-}
-
-djupie() {
-    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/temr/emr-5-8-0-dev:0.0.1 jupacca
-}
-
-myip() {
-    ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
-    echo $ip
-    #xhost + $ip
-}
-
-startx() {
-	if [ -z "$(ps -ef|grep XQuartz|grep -v grep)" ] ; then
-	    open -a XQuartz
-	fi
-    ip=`myip`
-    /opt/X11/bin/xhost + $ip
-    export DISPLAY=$ip:0
-}
-
-ddev() {
-    docker run -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -p 8888:8888 -p 4040:4040 -it registry.tubularlabs.net/emr:4.3.0.dev /bin/bash
-}
-
-denv() {
-    docker-machine start $*
-    docker-machine env $*
-    eval $(docker-machine env $* )
-}
-
-ddev() {
-    docker-compose run dev /bin/bash
-}
-
-dclean() {
-    docker rm $(docker ps -a -q)
-    docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
-    docker volume rm $(docker volume ls -qf dangling=true)
-}
-
-dkafka() {
-   docker-compose -f ~/tubular/repos/tbcode/pkg-castor/docker-compose.yml run -e ZOO="zookeeper.service.tubular:2181/kafka-taurus" kafka.docker /bin/bash
-}
-
-dprod() {
-    export DOCKER_HOST="tcp://docker.tubularlabs.net:2375"
-}
-
-dbash() {
-    docker-compose run $* /bin/bash
-}
-
-gappend() {
-    git config --global push.default current
-    git add -u
-    git commit --amend --no-edit
-    git push origin --force
-}
-
-gcache() {
-    git diff --cached
-}
-
-gff() {
-    git fetch
-    git merge --ff-only
-}
-
-alias gst="git status"
-alias goinfra="cd ~/tubular/repos/infrastructure"
-alias gotb="cd ~/tubular/repos/tbcode"
-alias gomesos="cd ~/tubular/repos/mesos-jobs"
-
-alias gb="git checkout -b"
-alias gp="git push origin HEAD"
-
-alias dc="docker-compose"
-alias dcb="docker-compose build"
-alias dcr="docker-compose run"
-alias dbuild="docker-compose build"
-alias drun="docker-compose run"
-alias dbash="docker-compose run dev /bin/bash"
-alias dup="docker-compose up -d"
-alias ddown="docker-compose down -v"
-
+# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -243,7 +103,7 @@ alias ddown="docker-compose down -v"
 # export ARCHFLAGS="-arch x86_64"
 
 # ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -253,19 +113,3 @@ alias ddown="docker-compose down -v"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# added by travis gem
-[ -f /Users/psk/.travis/travis.sh ] && source /Users/psk/.travis/travis.sh
-source /Users/psk/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# tmuxinator
-#source ~/.tmuxinator.zsh
-
-[[ -s "$HOME/.local/share/marker/marker.sh" ]] && source "$HOME/.local/share/marker/marker.sh"
-
-export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools/:/Users/psk/tubular/vault_dir
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"

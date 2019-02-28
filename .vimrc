@@ -5,7 +5,6 @@ filetype indent plugin on
 set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#begin()
 Bundle 'gmarik/Vundle.vim'
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
 Bundle 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-fugitive'
 Bundle 'ap/vim-buftabline'
@@ -42,7 +41,6 @@ Plugin 'Vimjas/vim-python-pep8-indent'
 Plugin 'tpope/vim-fireplace'
 call vundle#end()
 filetype plugin indent on
-source /Library/Python/2.7/site-packages/powerline/bindings/vim/plugin/powerline.vim
 set guifont=Source\ Code\ Pro\ for\ Powerline:h15
 let g:Powerline_symbols = 'fancy'
 set laststatus=2
